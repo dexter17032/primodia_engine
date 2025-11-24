@@ -9,7 +9,7 @@ class Agent:
         self.size = config.CELL_SIZE
         self.color=color
         self.directions=[(0,1),(0,-1),(1,0),(-1,0)]
-        self.energy = random.randint(150,200)
+        self.energy = random.randint(config.MAX_ENERGY-50,config.MAX_ENERGY)
         self.isalive = True
         self.hunger = 1 - (self.energy/config.MAX_ENERGY)
     def update(self,tile):
@@ -22,7 +22,7 @@ class Agent:
         visible_foods=[]
         self.hunger = 1-(self.energy/config.MAX_ENERGY)
         
-        if random.random() < self.hunger:
+        if random.random()+config.SURVIVAL_FACTOR < self.hunger:
             
             for food in foods:
                 dist = math.sqrt((food.row-self.row)**2+(food.col-self.col)**2)

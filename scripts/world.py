@@ -9,6 +9,7 @@ class World:
         self.grid = Grid()
         self.agents=[]
         self.foods=[]
+        self.energy_wastage = 0
 
         for _ in range(config.NO_OF_AGENTS):
             row = random.randint(0, self.grid.rows - 1)
@@ -19,8 +20,13 @@ class World:
                 random.randint(50, 255),
                 random.randint(50, 255)
             )
-
             self.agents.append(Agent(col, row, color))
+            
+        for _ in range(config.BASE_AVAILABLE_FOODS):
+            r = random.randint(0,self.grid.rows-1)
+            c = random.randint(0,self.grid.cols-1)
+            self.foods.append(Food((r,c)))
+                
             
         
         self.occupied=set()
@@ -76,7 +82,7 @@ class World:
     def update(self):
         self.occupied=set()
         self.proposals={}
-        foods_to_remove=[] 
+        foods_to_remove=set()
             
         for agent in self.agents:
             self.occupied.add((agent.row,agent.col))
@@ -91,8 +97,16 @@ class World:
         for agent in self.agents:
             for food in self.foods:
                 if agent.row==food.row and agent.col==food.col:
-                    agent.energy = min(agent.energy+random.randint(60,80),config.MAX_ENERGY)
-                    foods_to_remove.append(food)
+                    energy_req_agent = config.MAX_ENERGY-agent.energy
+                    if food.energy>energy_req_agent:
+                        agent.energy=config.MAX_ENERGY
+                        food.energy-=energy_req_agent
+                    else:
+                        agent.energy+=food.energy 
+                        food.energy=0
+                    
+                    if food.energy<=0:
+                        foods_to_remove.add(food)
                         
         for f in foods_to_remove:self.foods.remove(f)
                 

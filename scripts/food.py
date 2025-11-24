@@ -8,6 +8,8 @@ class Food:
         self.size = config.CELL_SIZE
         food_pallete = [(255,50,50),(40,100,255),(140,255,140)]
         self.color = food_pallete[0]
+        self.energy = random.randint(config.MAX_ENERGY_PER_FOOD*0.75,config.MAX_ENERGY_PER_FOOD)
+        
     def draw(self, surface):
         x = self.col * self.size
         y = self.row * self.size
