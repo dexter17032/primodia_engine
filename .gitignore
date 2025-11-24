@@ -1,0 +1,32 @@
+# Byte-compiled Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+.venv/
+ENV/
+
+# Pygame / runtime files
+*.log
+*.tmp
+
+# VSCode settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Build / dist
+build/
+dist/
+*.spec
+
+# Local config / secrets (if any)
