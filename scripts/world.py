@@ -68,15 +68,20 @@ class World:
             if len(agent_list) == 1:
                 approved[agent_list[0]] = tile
             else:
-                #if is_food_tile:
-                winner = max(agent_list,key=lambda a:a.hunger)
-                #else:
-                    #winner = random.choice(agent_list)
+                if is_food_tile:
+                    winner = max(agent_list,key=lambda a:a.hunger)
+                else:
+                    winner = random.choice(agent_list)
                 
                 approved[winner] = tile
 
         return approved
 
+    def mutate_if_possible(self,agent):
+        if agent.energy > config.MAX_ENERGY*0.95:
+            self.agents.append(agent.row,agent.col,(0,0,0))
+            
+            
     
     
     def update(self):
@@ -107,10 +112,13 @@ class World:
                     
                     if food.energy<=0:
                         foods_to_remove.add(food)
+                    agent.ishungry = False
                         
         for f in foods_to_remove:self.foods.remove(f)
                 
         alive_agents = [a for a in self.agents if a.isalive]
+        # for agent in self.agents:
+        #     self.mutate_if_possible(agent)
         self.agents=alive_agents
         if len(self.foods) < config.FOOD_CAP:
             if random.random() <= config.FOOD_SPAWN_CHANCE:
