@@ -4,23 +4,33 @@ import random
 import math
 class Agent:
     def __init__(self,x,y,color):
+        
+        #position params
         self.col = x
         self.row = y
         self.size = config.CELL_SIZE
         self.color=color
         self.directions=[(0,1),(0,-1),(1,0),(-1,0)]
         self.target_tile=None
+        
+        #eating and energy params
         self.energy = random.randint(config.MAX_ENERGY-50,config.MAX_ENERGY)
         self.isalive = True
         self.ishungry = False
         self.hunger = 1 - (self.energy/config.MAX_ENERGY)
-        self.smell_radius = config.SMELL_RADIUS
-        self.metabolism = 1+random.random()
+        
+        #fucking params        
         self.horniness = random.random()
         self.gender = random.choice(["M","F"])
         self.mating_cooldown = 0
         self.target_partner  = None
-                
+        
+        #mutation params
+        self.smell_radius = random.randint(15,config.SMELL_RADIUS)
+        self.metabolism = random.uniform(0.6,1)*config.METABOLISM_RATE_GLOBAL
+        self.laziness = random.uniform(0,0.5)
+            
+            
     def update(self,tile):
         self.energy-= self.metabolism
         self.horniness+= random.random()*config.WORLD_HORNINESS
@@ -36,7 +46,16 @@ class Agent:
         if self.horniness>config.HORNINESS_THRESHOLD and self.energy > config.MAX_ENERGY*0.80 and self.mating_cooldown==0:
             return True
             
+    def inherit(self,mother,father):
+        self.metabolism = (mother.metabolism+father.metabolism)/2
+        self.smell_radius = (mother.smell_radius+father.smell_radius)/2
+        
+        if random.random() < config.MUTATION_RATE:
+            self.metabolism *= random.uniform(1-config.MUTATION_LIMIT,1+config.MUTATION_LIMIT)
             
+        if random.random() < config.MUTATION_RATE:
+            self.smell_radius *= random.uniform(1-config.MUTATION_LIMIT,1+config.MUTATION_LIMIT)
+           
     
     def pick_target(self,foods):
         visible_foods=[]
@@ -77,23 +96,28 @@ class Agent:
             
     def propose_move(self,foods):
         
-        if self.target_tile == None or (self.row == self.target_tile[0] and self.col == self.target_tile[1]):
-            self.pick_target(foods)
-         
-        if self.row==self.target_tile[0]:
-            dx=0
-        elif self.row < self.target_tile[0] :
-            dx =1
-        else:
-            dx = -1
-            
-        if self.col==self.target_tile[1]:
-            dy = 0
-        elif self.col < self.target_tile[1] :
-            dy = 1
-        else:
-            dy = -1
         
+        if random.random() > self.laziness:
+            if self.target_tile == None or (self.row == self.target_tile[0] and self.col == self.target_tile[1]):
+                self.pick_target(foods)
+         
+            if self.row==self.target_tile[0]:
+                dx=0
+            elif self.row < self.target_tile[0] :
+                dx =1
+            else:
+                dx = -1
+                
+            if self.col==self.target_tile[1]:
+                dy = 0
+            elif self.col < self.target_tile[1] :
+                dy = 1
+            else:
+                dy = -1
+        
+        else :
+            dx,dy = 0,0
+             
         return (self.row+dx,self.col+dy)                
     
     def draw(self,surface):

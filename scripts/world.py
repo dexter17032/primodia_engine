@@ -42,11 +42,31 @@ class World:
     
     def get_stats(self):
         if len(self.agents) > 0:
-            avg_energy = sum(a.energy for a in self.agents) / len(self.agents)
-            avg_horniness = sum(a.horniness for a in self.agents) / len(self.agents)
+            total_energy = 0
+            total_horniness = 0
+            total_smell_radius = 0
+            total_metabolism = 0
+            
+            
+            for agent in self.agents:
+                total_energy+= agent.energy
+                total_horniness+= agent.horniness
+                total_smell_radius += agent.smell_radius
+                total_metabolism += agent.metabolism
+            
+            count = len(self.agents)
+            avg_energy,avg_horniness,avg_metabolism,avg_smell_radius = (
+                total_energy/count,
+                total_horniness/count,
+                total_metabolism/count,
+                total_smell_radius/count
+                )   
+                
         else:
             avg_energy = 0
             avg_horniness = 0
+            avg_smell_radius = 0
+            avg_metabolism = 0
 
         return {
         "agents": len(self.agents),
@@ -54,6 +74,8 @@ class World:
         "foods": len(self.foods),
         "avg_energy": int(avg_energy),
         "avg_horniness": int(avg_horniness),
+        "avg_smell_radius" : avg_smell_radius,
+        "avg_metabolism" : avg_metabolism,
         "mating": len(self.mating_in_progress),
         }
 
@@ -211,11 +233,10 @@ class World:
                     random.randint(50, 255),
                     random.randint(50, 255)
                 ))
+                baby.inherit(female,male)
                 self.no_of_babies+=1
 
             # Optional: inherit some traits
-                baby.energy = config.MAX_ENERGY * 0.5
-                baby.metabolism = (female.metabolism + male.metabolism) / 2
 
                 self.agents.append(baby)
                 self.occupied.add((r, c))

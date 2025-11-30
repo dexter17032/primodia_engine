@@ -29,6 +29,8 @@ population_data = []
 food_data = []
 avg_energy_data = []
 avg_horniness_data = []
+avg_smell_radius_data = []
+avg_metabolism_data = []
 mating_data = []
 babies_data = []
 ticks = []
@@ -47,6 +49,8 @@ while running:
     food_data.append(stats["foods"])
     avg_energy_data.append(stats["avg_energy"])
     avg_horniness_data.append(stats["avg_horniness"])
+    avg_smell_radius_data.append(stats["avg_smell_radius"])
+    avg_metabolism_data.append(stats["avg_metabolism"])
     mating_data.append(stats["mating"])
     babies_data.append(stats["babies"])
     ticks.append(tick)
@@ -62,6 +66,10 @@ while running:
     draw_text(screen, f"Mating in Progress: {stats['mating']}", 10, 90)
     draw_text(screen, f"Avg Energy: {stats['avg_energy']}", 10, 110)
     draw_text(screen, f"Avg Horniness: {stats['avg_horniness']}", 10, 130)
+    draw_text(screen, f"Avg Smell radius: {stats['avg_smell_radius']}", 10, 150)
+    draw_text(screen, f"Avg Metabolism: {stats['avg_metabolism']}", 10, 170)
+    
+    
 
     pygame.display.flip()
     clock.tick(config.FPS)
@@ -116,10 +124,19 @@ fig3.add_trace(go.Scatter(x=ticks, y=avg_horniness_data, name="Avg Horniness"))
 fig3.update_layout(template="plotly_dark", title="Energy & Horniness Over Time")
 html += f'<div class="plot-container">{fig3.to_html(include_plotlyjs=False, full_html=False)}</div>'
 
+# ---- 3rd Plot: Energy & Horniness ----
+fig4 = go.Figure()
+fig4.add_trace(go.Scatter(x=ticks, y=avg_smell_radius_data, name="Avg Smell Radius"))
+fig4.update_layout(template="plotly_dark", title="Smell Radius Over Time")
+html += f'<div class="plot-container">{fig4.to_html(include_plotlyjs=False, full_html=False)}</div>'
+
+fig5 = go.Figure()
+fig5.add_trace(go.Scatter(x=ticks, y=avg_smell_radius_data, name="Avg Metabolism"))
+fig5.update_layout(template="plotly_dark", title="Metabolism Over Time")
+html += f'<div class="plot-container">{fig5.to_html(include_plotlyjs=False, full_html=False)}</div>'
+
 html += "</body></html>"
 
 with open("simulation_dashboard.html", "w") as f:
     f.write(html)
 
-print("📊 Dashboard saved as simulation_dashboard.html")
-print("➡️ Open it in your browser and scroll through the plots.")

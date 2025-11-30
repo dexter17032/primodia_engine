@@ -52,6 +52,7 @@ MAX_ENERGY_PER_FOOD = 1500 # reduced from 4000
 SMELL_RADIUS = 25          # huge nerf so agents can't snipe food across map
 SURVIVAL_FACTOR = 0.15     # makes hunger stronger than randomness
 BASE_AVAILABLE_FOODS = 12
+METABOLISM_RATE_GLOBAL = 2
 
 # --- MATING ---
 WORLD_HORNINESS = 0.15     # reduced MASSIVELY from 5
@@ -60,4 +61,6 @@ HORNINESS_WEIGHT = 0.6
 ENERGY_WEIGHT = 1.0
 DISTANCE_WEIGHT = 0.1
 
-MATING_COOLDOWN = 1200     # big cooldown to slow population explosion
+MATING_COOLDOWN = 1200      # big cooldown to slow population explosion
+MUTATION_RATE = 0.3
+MUTATION_LIMIT = 0.2
