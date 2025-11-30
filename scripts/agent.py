@@ -28,7 +28,7 @@ class Agent:
         #mutation params
         self.smell_radius = random.randint(15,config.SMELL_RADIUS)
         self.metabolism = random.uniform(0.6,1)*config.METABOLISM_RATE_GLOBAL
-        self.laziness = random.uniform(0,0.5)
+        #self.laziness = random.uniform(0,0.5)
             
             
     def update(self,tile):
@@ -95,28 +95,24 @@ class Agent:
         
             
     def propose_move(self,foods):
-        
-        
-        if random.random() > self.laziness:
-            if self.target_tile == None or (self.row == self.target_tile[0] and self.col == self.target_tile[1]):
-                self.pick_target(foods)
+
+        if self.target_tile == None or (self.row == self.target_tile[0] and self.col == self.target_tile[1]):
+            self.pick_target(foods)
          
-            if self.row==self.target_tile[0]:
-                dx=0
-            elif self.row < self.target_tile[0] :
-                dx =1
-            else:
-                dx = -1
+        if self.row==self.target_tile[0]:
+            dx=0
+        elif self.row < self.target_tile[0] :
+            dx =1
+        else:
+            dx = -1
                 
-            if self.col==self.target_tile[1]:
-                dy = 0
-            elif self.col < self.target_tile[1] :
-                dy = 1
-            else:
-                dy = -1
+        if self.col==self.target_tile[1]:
+            dy = 0
+        elif self.col < self.target_tile[1] :
+            dy = 1
+        else:
+            dy = -1
         
-        else :
-            dx,dy = 0,0
              
         return (self.row+dx,self.col+dy)                
     

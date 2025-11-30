@@ -30,3 +30,4 @@ dist/
 *.spec
 
 # Local config / secrets (if any)
+scripts/simulation_dashboard.html
